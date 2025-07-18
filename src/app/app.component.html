@@ -9,15 +9,22 @@
           <div class="col-12">
             <table class="table table-bordered">
               <thead>
-                <tr>
-                  <th>Sr No</th>
-                  <th>Name</th>
-                  <th>Contact No</th>
-                  <th>Email-Id</th>
-                </tr>
+              <tr>
+                <th>Sr No</th>
+                <th>Name</th>
+                <th>Contact No</th>
+                <th>Email-Id</th>
+              </tr>
               </thead>
               <tbody>
-
+                @for (item of employeeList; track $index) {
+                  <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.contactNo }}</td>
+                    <td>{{ item.emailId }}</td>
+                  </tr>
+                }
               </tbody>
             </table>
           </div>
@@ -67,7 +74,7 @@
               <button class="btn btn-secondary">Reset</button>
             </div>
             <div class="col-6 text-center">
-              <button class="btn btn-success">Save Employee</button>
+              <button class="btn btn-success" (click)="onSave()">Save Employee</button>
             </div>
           </div>
         </form>
