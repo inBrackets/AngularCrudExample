@@ -14,6 +14,7 @@
                 <th>Name</th>
                 <th>Contact No</th>
                 <th>Email-Id</th>
+                <th class="text-center">Action</th>
               </tr>
               </thead>
               <tbody>
@@ -23,6 +24,10 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.contactNo }}</td>
                     <td>{{ item.emailId }}</td>
+                    <td class="text-center">
+                      <button class="btn btn-primary" (click)="onEdit(item)">Edit</button>
+                      <button class="btn btn-danger mx-2" (click)="onDelete(item)">Delete</button>
+                    </td>
                   </tr>
                 }
               </tbody>
@@ -41,40 +46,62 @@
         <form [formGroup]="employeeForm">
           <div class="row">
             <div class="col-6">
-              <label for="">Name</label>
-              <input type="text" formControlName="name" class="form-control"/>
+              <label for="name-input">Name</label>
+              <input id="name-input" type="text" formControlName="name" class="form-control"/>
+              <div class="text-danger">
+                @if (!employeeForm.controls['name'].untouched) {
+                  @if (employeeForm.controls['name'].errors?.['required']) {
+                    <span>Name is required</span>
+                  }
+                }
+              </div>
             </div>
             <div class="col-6">
-              <label for="">Email-Id</label>
-              <input type="text" formControlName="emailId" class="form-control"/>
+              <label for="email-input">Email-Id</label>
+              <input id="email-input" type="text" formControlName="emailId" class="form-control"/>
             </div>
             <div class="col-6">
-              <label for="">Contact No</label>
-              <input type="text" formControlName="contactNo" class="form-control"/>
+              <label for="contact-no-input">Contact No</label>
+              <input id="contact-no-input" type="text" formControlName="contactNo" class="form-control"/>
             </div>
             <div class="col-6">
-              <label for="">City</label>
-              <input type="text" formControlName="city" class="form-control"/>
+              <label for="city-input">City</label>
+              <input id="city-input" type="text" formControlName="city" class="form-control"/>
             </div>
             <div class="col-6">
-              <label for="">State</label>
-              <input type="text" formControlName="state" class="form-control"/>
+              <label for="state-input">State</label>
+              <input id="state-input" type="text" formControlName="state" class="form-control"/>
             </div>
             <div class="col-6">
-              <label for="">Pin Code</label>
-              <input type="text" formControlName="pinCode" class="form-control"/>
+              <label for="pin-code-input">Pin Code</label>
+              <input id="pin-code-input" type="text" formControlName="pinCode" class="form-control"/>
+              <div class="text-danger">
+                @if (!employeeForm.controls['pinCode'].untouched) {
+                  @if (employeeForm.controls['pinCode'].errors?.['required']) {
+                    <span>Pin code is required</span>
+                  } @else if (employeeForm.controls['pinCode'].errors?.['minlength']) {
+                    <span>Min 6 characters required</span>
+                  }
+                }
+              </div>
             </div>
             <div class="col-12">
-              <label for="">Address</label>
-              <textarea formControlName="address" class="form-control"></textarea>
+              <label for="address-textarea">Address</label>
+              <textarea id="address-textarea" formControlName="address" class="form-control"></textarea>
             </div>
           </div>
-          <div class="row">
+          <div class="row pt-2">
             <div class="col-6 text-center">
-              <button class="btn btn-secondary">Reset</button>
+              <button class="btn btn-secondary" type="button" (click)="onReset()">Reset</button>
             </div>
             <div class="col-6 text-center">
-              <button class="btn btn-success" (click)="onSave()">Save Employee</button>
+              @if (employeeForm.controls['employeeId'].value == '0') {
+                <button class="btn btn-success" [disabled]="employeeForm.invalid" (click)="onSave()">Save Employee
+                </button>
+              } @else {
+                <button class="btn btn-warning" [disabled]="employeeForm.invalid" (click)="onUpdate()">Update Employee
+                </button>
+              }
             </div>
           </div>
         </form>
